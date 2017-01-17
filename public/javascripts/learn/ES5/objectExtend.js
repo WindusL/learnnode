@@ -56,7 +56,7 @@ var instance2 = new SubType();
 /*
  * 借用构造函数
  * 缺点：方法都在构造函数中定义，因此函数利用就无从谈起了。而且，在超类型的原型中定义的方法，对子类型不可见，
- * 结果所有类型都只能使用构造函数模式。由于这些问题，借用构造函数的动手术也是很少单独使用。
+ * 结果所有类型都只能使用构造函数模式。由于这些问题，借用构造函数的技术也是很少单独使用。
  */
 function SuperType2() {
     this.color = ['red', 'blue', 'green'];
@@ -94,4 +94,94 @@ console.log(instance6.age);
 
 /*
  * 组合继承
+ * 伪经典继承，将原型链和借用构造函数的技术组合到一块。
+ * （使用原型链实现对原型属性和方法的继承，通过借用构造函数来实现对实例属性的继承。
+ * 组合继承避免了原型链和借用构造函数的缺陷，整合了空位的优点，成为JavaScript中最常用的继承模式。
+ * 而且，instanceof和isPrototypeOf也能够用于识别基于组合继承创建的对象
+ */
+function Fruit(name) {
+    this.name = name;
+    this.fav = ['good', 'beauty'];
+}
+
+Fruit.prototype.sayName = function () {
+    console.log(this.name);
+}
+
+function Apple(name, color) {
+    Fruit.call(this, name);
+    this.color = color;
+}
+
+Apple.prototype = new Fruit();
+
+Apple.prototype.sayColor = function () {
+    console.log(this.color);
+}
+
+var fru1 = new Apple('红苹果', 'red');
+fru1.sayName();
+fru1.sayColor();
+fru1.fav.push('dush');
+console.log(fru1.fav);
+
+var fru2 = new Apple('绿苹果', 'green');
+fru2.sayName();
+fru2.sayColor();
+console.log(fru2.fav);
+
+
+/*
+ *原型式继承(引用类型值的属性共享)
+ */
+function object(o) {
+    function F() {
+
+    }
+
+    F.prototype = o;
+    return new F();
+}
+
+var person = {
+    name: 'Nicholas',
+    friends: ['Shelby', 'Court', 'Van']
+};
+
+var anotherPerson = object(person);
+anotherPerson.name = 'Greg';
+anotherPerson.friends.push('Rob');
+
+var yetAnotherPerson = object(person);
+yetAnotherPerson.name = 'Linda';
+yetAnotherPerson.friends.push('Barble');
+
+console.log(person.friends);
+console.log(anotherPerson.friends);
+console.log(yetAnotherPerson.friends);
+
+
+/*
+ *寄生式继承
+ * 与原型式继承紧密相关的一种思路
+ * 缺点：为对象添加函数，会由于不能做到函数复用而降低效率;这一点与构造函数模式类似。
+ */
+function createAnother(original) {
+    var clone = object(original);
+    clone.sayHi = function () {
+        console.log("hi");
+    }
+    return clone;
+}
+
+var anotherPerson = {
+    name: 'Nicholas',
+    friends: ['Shelby', 'Court', 'Van']
+};
+var anotherPerson = createAnother(anotherPerson);
+anotherPerson.sayHi();
+
+
+/*
+ *寄生组合式继承
  */
