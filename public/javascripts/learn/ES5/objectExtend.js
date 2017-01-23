@@ -98,6 +98,7 @@ console.log(instance6.age);
  * （使用原型链实现对原型属性和方法的继承，通过借用构造函数来实现对实例属性的继承。
  * 组合继承避免了原型链和借用构造函数的缺陷，整合了空位的优点，成为JavaScript中最常用的继承模式。
  * 而且，instanceof和isPrototypeOf也能够用于识别基于组合继承创建的对象
+ * 缺点：组合继承最大的问题是无论什么情况下，都会调用两次超类型构造函数：一次是在创建子类型原型的时候，另一次是在子类型构造函数内部。
  */
 function Fruit(name) {
     this.name = name;
@@ -109,11 +110,11 @@ Fruit.prototype.sayName = function () {
 }
 
 function Apple(name, color) {
-    Fruit.call(this, name);
+    Fruit.call(this, name);//第一次调用超类型构造函数
     this.color = color;
 }
 
-Apple.prototype = new Fruit();
+Apple.prototype = new Fruit();//第二次调用超类型构造函数
 
 Apple.prototype.sayColor = function () {
     console.log(this.color);
@@ -170,7 +171,7 @@ function createAnother(original) {
     var clone = object(original);
     clone.sayHi = function () {
         console.log("hi");
-    }
+    };
     return clone;
 }
 
@@ -184,4 +185,42 @@ anotherPerson.sayHi();
 
 /*
  *寄生组合式继承
+ *由于组合继承每次调用两次超超类构造函数，寄生组合继承解决了这个问题。
+ * 寄生组合式继承被普遍认为是引用类型最理想的继承范式
  */
+function inheritPrototype(subType, superType) {
+    var prototype = object(superType.prototype);
+    prototype.constructor = subType;
+    subType.prototype = prototype;
+}
+
+function Animal(name) {
+    this.name = name;
+    this.color = ['red', 'blue', 'green'];
+}
+
+Animal.prototype.sayName = function () {
+    console.log(this.name);
+};
+
+function Dog(name, age) {
+    Animal.call(this, name);
+    this.age = age;
+}
+
+inheritPrototype(Dog, Animal);
+
+Dog.prototype.sayAge = function () {
+    console.log(this.age);
+};
+
+var wdog = new Dog('白毛', 2);
+wdog.sayName();
+wdog.sayAge();
+wdog.color.push('white');
+console.log(wdog.color);
+
+var bdog = new Dog('黑毛', 3);
+bdog.sayName();
+bdog.sayAge();
+console.log(bdog.color);

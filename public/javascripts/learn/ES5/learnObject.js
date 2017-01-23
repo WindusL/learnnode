@@ -66,11 +66,13 @@ book.__defineSetter__('year', function (newValue) {
 var bookDescribe = Object.getOwnPropertyDescriptor(book, '_year');
 console.log(bookDescribe.writable);
 
-/*
+/**
  *对象创建模式
  */
 
-//工厂模式（缺点：不知道创建对象的类型）
+/*
+ *工厂模式（缺点：不知道创建对象的类型）
+ */
 function createPerson(name, age, job) {
     var o = new Object();
     o.name = name;
@@ -114,7 +116,10 @@ function sayName() {
     console.log(this.name);
 }
 
-//原型模式
+
+/*
+ *原型模式
+ */
 function PrototypeObj() {
 }
 PrototypeObj.prototype.name = '张三';
@@ -198,7 +203,10 @@ console.log(prototypeFlaw1.friends);
 console.log(prototypeFlaw2.friends);
 console.log(prototypeFlaw1.friends === prototypeFlaw2.friends);
 
-//组合使用构造函数和原型模式(目前ECMAScript中使用最广泛、认同度最高的一种创建自定义类型方法)
+
+/*
+ *组合使用构造函数和原型模式(目前ECMAScript中使用最广泛、认同度最高的一种创建自定义类型方法)
+ */
 function ConstructorCombinationPrototype(name) {
     this.name = name;
     this.friends = ['Shellby', 'Court'];
@@ -211,7 +219,10 @@ ConstructorCombinationPrototype.prototype = {
     }
 };
 
-//动态原型模式（将原型挪到构造函数中，动态判断方法是否存在，不存在创建）
+
+/*
+ *动态原型模式（将原型挪到构造函数中，动态判断方法是否存在，不存在创建）
+ */
 function ConstructorCombinationPrototype2(name) {
     this.name = name;
     this.friends = ['Shellby', 'Court'];
@@ -225,7 +236,9 @@ function ConstructorCombinationPrototype2(name) {
 //注意：使用动态原型模式时，不能使用对象字面量重写原型，如果已经创建了实例的情况下，重写原型就会切断现在实例与新原型之间的联系。
 
 
-//寄生构造函数模式（通常在前几种模式都不适用的情况下使用）
+/*
+ *寄生构造函数模式（通常在前几种模式都不适用的情况下使用）
+ */
 function SpecialArray() {
     var values = new Array();
     values.push.apply(values, arguments);
@@ -247,7 +260,9 @@ console.log(colors.toPipedString());
  */
 
 
-//稳妥构造函数模式（除了调用sayName方法以外，没有其它方式访问数据成员）
+/*
+ *稳妥构造函数模式（除了调用sayName方法以外，没有其它方式访问数据成员）
+ */
 function SafeModel(name) {
     var o = new Object();
     o.sayName = function () {
