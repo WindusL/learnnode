@@ -1,5 +1,7 @@
 #自定义配置
 .DS_Store
+.vscode
+.idea
 
 # Logs
 logs
@@ -59,3 +61,5 @@ typings/
 
 # dotenv environment variables file
 .env
+static/images/
+view/
