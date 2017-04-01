@@ -1,0 +1,28 @@
+{
+    // Use IntelliSense to learn about possible Node.js debug attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "测试文件",
+            "program": "${workspaceRoot}/static/javascripts/test.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "启动app主程序",
+            "program": "${workspaceRoot}/app.js",
+            "cwd": "${workspaceRoot}",
+            "url": "test.js"
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "附加到进程",
+            "port": 5858
+        }
+    ]
+}
